@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .test {
+        font-size: 20px;
+        display: none;
+    }
+
+    .box {
+        background-color: black;
+        height: 150px;
+        width: 60px;
+    }
+    .result{
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="container">
+
+        <div class="test">F P C D</div>
+        <h2 class="result"></h2>
+        <div class="box">
+        </div>
+        <button class="cal_button">calibrate</button>
+
+    </div>
+    <script>
+        const box = document.querySelector('.box');
+        const test = document.querySelector('.test');
+        const calButton = document.querySelector(".cal_button");
+        const result = document.querySelector(".result");
+        
+        let k = 0.009000999999999999;
+
+        const calibration = {
+            isCalibrated: false,
+            calibrationUnit: 0
+        }
+
+        function calcEyePower(size,k) {
+            console.log(size, k ,calibration.calibrationUnit)
+            const eyePower = 0.01291765*size*k*calibration.calibrationUnit + 0.6880325789;
+            return -1 * eyePower;
+        }
+        calButton.onclick = () => {
+            if(calibration.isCalibrated){
+                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
+                result.style.display = "block";
+            }else{
+                calibration.calibrationUnit = parseInt(box.style.width.split("p")[0]);
+                console.log(calibration.calibrationUnit);
+                calibration.isCalibrated = true;
+                calButton.innerHTML = "Calculate My Power";
+                box.style.display = "none";
+                test.style.display = "block";
+            }
+        }
+
+        function randomChar() {
+            let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        let count = 20;
+        window.addEventListener('keydown', (e) => {
+            if (e.keyCode === 38) {
+                count++;
+            }
+            else if (e.keyCode === 40) {
+                count--;
+            } else if (e.keyCode === 32) {
+                test.innerHTML = `${randomChar()} ${randomChar()} ${randomChar()} ${randomChar()}`;
+            } else if (e.key === "q"){
+                k += 0.0001;
+                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
+            } else if (e.key === "e") {
+                k -= 0.0001;
+                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
+            } else if (e.key === "w") {
+                console.log("k = ",k);
+            }
+
+            test.style.fontSize = count + 'px';
+            box.style.width = 3 * count + 'px';
+
+        })
+    </script>
+</body>
+
+</html>
