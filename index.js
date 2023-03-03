@@ -30,9 +30,8 @@ app.set("view engine", "ejs");
 app.set("views", "templates");
 
 app.get('*', checkUser);
-app.get("/",(req,res)=>{res.render("index");
-
-});
+app.get("/",(req,res)=>{res.render("index")});
+app.get("/checkup",(req,res)=>{res.render("app")});
 
 
 // signup
