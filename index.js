@@ -5,6 +5,7 @@ const cookieparser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer")
 const users = require("./models/user");
+const eyepower = require("./models/eyePower");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 5000;
 const { checkUser, checkAuth } = require("./middleware/authmiddleware");
@@ -80,6 +81,37 @@ app.get("/logout", (req, res) => {
     res.cookie("jwt", "frostHack", { maxAge: 1, httpOnly: true });
     res.redirect("/");
 })
+
+app.get("/profile", checkAuth, async (req, res) => {
+
+    const user_id = res.locals.user._id;
+    const usereyePower = await eyepower.find({ user: user_id });
+
+    res.render("profile", { userData: usereyePower });
+});
+
+app.post("/saveResult", async (req, res) => {
+    const { leftEye, rightEye } = req.body;
+
+    let date = Date.now();
+    console.log(date)
+
+    if (leftEye == "" || rightEye == "") {
+        res.json("false");
+    }
+    else {
+        try {
+
+            await eyepower.create({ leftEye, rightEye, date })
+            res.json("true");
+
+        } catch (error) {
+            res.json("false");
+        }
+    }
+})
+
+
 
 
 app.post("/send", (req, res) => {
