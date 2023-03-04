@@ -50,8 +50,9 @@ function createToken(id) {
 app.post("/signup", async (req, res) => {
 
     const { username, password, email } = req.body;
+    const image = `https://robohash.org/${Date.now()}.png?size=50x50&set=set1`;
 
-    const newUser = await users.create({ username, password, email });
+    const newUser = await users.create({ username, password, email, image });
     const token = createToken(newUser._id);
 
     res.cookie("jwt", token, { maxAge: maxage * 1000, httpOnly: true });
