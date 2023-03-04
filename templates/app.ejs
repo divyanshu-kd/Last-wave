@@ -63,7 +63,7 @@
 
         function calcEyePower(size,k) {
             console.log(size, k ,calibration.calibrationUnit)
-            const eyePower = 0.01291765*size*k / calibration.calibrationUnit + 0.6880325789;
+            const eyePower = 0.01291765*size*k/calibration.calibrationUnit + 0.6880325789;
             return -1 * eyePower;
         }
         calButton.onclick = () => {
@@ -81,7 +81,7 @@
         }
 
         function randomChar() {
-            let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let chars = 'ABcDeFgHIjKLMNOPqRSTuVWxYz';
             return chars.charAt(Math.floor(Math.random() * chars.length));
         }
 
