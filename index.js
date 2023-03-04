@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "./config.env" })
 
+const cors = require("cors");
 const express = require("express");
 const cookieparser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
@@ -26,6 +27,7 @@ app.use(express.static("static"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieparser());
+app.use(cors());
 
 // setting view-engine
 app.set("view engine", "ejs");
