@@ -8,101 +8,298 @@
     <title>Document</title>
 </head>
 <style>
+    body {
+
+        width: 100%;
+        height: 100%;
+    }
+
     .container {
-        position: fixed;
+        width: 100%;
+        height: 100%;
         inset: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        max-width: 95vw;
+        text-align: center;
     }
 
     .test {
         font-size: 20px;
         display: none;
+        text-align: center;
+        /* font-weight: bold; */
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     .box {
         background-color: black;
-        height: 150px;
+        height: 5px;
         width: 60px;
+        /* max-width: 90% !important; */
     }
-    .result{
+
+    .cal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .result {
         display: none;
+    }
+
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+
+    .right {
+        transform: translateX(-3px) rotate(-45deg);
+        -webkit-transform: translateX(-3px) rotate(-45deg);
+    }
+
+    .left {
+        transform: translateX(3px) rotate(135deg);
+        -webkit-transform: translateX(3px) rotate(135deg);
+    }
+
+    .up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+    .down {
+        transform: translateY(-3px) rotate(45deg);
+        -webkit-transform: translateY(-3px) rotate(45deg);
+    }
+
+    .calibrate_container {
+        margin: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 100%;
+    }
+
+    .app_btn {
+        padding: 5px 10px;
+        /* background-color: black; */
+        border-radius: 50% !important;
+        border: 1px solid black !important;
+        cursor: pointer;
+    }
+
+    .app_btn:hover {
+        background-color: black;
+    }
+
+    .app_btn:hover .arrow {
+        border-color: white;
+    }
+
+    .recal {
+        display: none;
+    }
+
+    .nav-tabs li div {
+        cursor: pointer;
     }
 </style>
 
 <body>
-    <div class="container">
+    <%- include("partials/navbar.ejs") %>
 
-        <div class="test">F P C D</div>
-        <h2 class="result"></h2>
-        <div class="box">
+        <div class="container">
+            <ul class="nav nav-tabs mt-3">
+                <li class="nav-item">
+                    <div class="nav-link active left-eye" aria-current="page">Left Eye</div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link right-eye" aria-current="page">Right Eye</div>
+                </li>
+            </ul>
+            <div class="eye_test" style="display: none;">
+                <h2 class="mt-5">Eye Test</h2>
+                <div class="test my-5" style="font-size: 20px;">F P C D</div>
+                <h3 class="result"></h3>
+            </div>
+            <div class="cal">
+
+                <h1 class="mt-5">Calibrate Your Distance</h1>
+                <div class="calibrate_container">
+                    <div class="arrow left"></div>
+                    <div class="box" style="width: 60px;"></div>
+                    <div class="arrow right"></div>
+                </div>
+                <div class="d-flex">
+
+                    <div class="btn app_btn app_up mx-1">
+                        <div class="arrow up"></div>
+                    </div>
+                    <div class="btn app_btn app_down mx-1">
+
+                        <div class="arrow down"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn m-2 mt-3 cal_button">Calibrate</button>
+            <button class="btn m-2 recal" style="display:none;">Re Calibrate</button>
+            <form class="eyeForm" action="" style="display:none;">
+                <input class="leftEyeInput" type="hidden" name="leftEye">
+                <input class="rightEyeInput" type="hidden" name="rightEye">
+                <button type="submit" class="btn m-2 save">Save my results</button>
+
+            </form>
+
         </div>
-        <button class="cal_button">calibrate</button>
+        <%- include("partials/footer.ejs") %>
+            <script>
+                const box = document.querySelector('.box');
+                const test = document.querySelector('.test');
+                const calButton = document.querySelector(".cal_button");
+                const result = document.querySelector(".result");
+                const cal = document.querySelector(".cal");
+                const up = document.querySelector(".app_up");
+                const down = document.querySelector(".app_down");
+                const recal = document.querySelector(".recal");
+                const save = document.querySelector(".save");
+                const navTabs = document.querySelector(".nav-tabs");
+                const leftEye = document.querySelector(".left-eye");
+                const rightEye = document.querySelector(".right-eye");
+                const eyeTest = document.querySelector(".eye_test");
+                const leftEyeInput = document.querySelector(".leftEyeInput");
+                const rightEyeInput = document.querySelector(".rightEyeInput");
+                const form = document.querySelector(".eyeForm");
 
-    </div>
-    <script>
-        const box = document.querySelector('.box');
-        const test = document.querySelector('.test');
-        const calButton = document.querySelector(".cal_button");
-        const result = document.querySelector(".result");
-        
-        let k = 0.009000999999999999;
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+                    const data = new FormData(form);
+                    const leftEye = data.get("leftEye");
+                    const rightEye = data.get("rightEye");
+                    console.log(leftEye, rightEye);
+                }
+                let isLeftEye = true;
 
-        const calibration = {
-            isCalibrated: false,
-            calibrationUnit: 0
-        }
+                leftEye.onclick = () => {
+                    isLeftEye = true;
+                    rightEye.classList.remove("active");
+                    leftEye.classList.add("active");
+                    eyeTest.firstElementChild.innerHTML = isLeftEye ? "Left Eye Test" : "Right Eye Test";
 
-        function calcEyePower(size,k) {
-            console.log(size, k ,calibration.calibrationUnit)
-            const eyePower = 0.01291765*size*k/calibration.calibrationUnit + 0.6880325789;
-            return -1 * eyePower;
-        }
-        calButton.onclick = () => {
-            if(calibration.isCalibrated){
-                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
-                result.style.display = "block";
-            }else{
-                calibration.calibrationUnit = parseInt(box.style.width.split("p")[0]);
-                console.log(calibration.calibrationUnit);
-                calibration.isCalibrated = true;
-                calButton.innerHTML = "Calculate My Power";
-                box.style.display = "none";
-                test.style.display = "block";
-            }
-        }
+                }
+                rightEye.onclick = () => {
+                    isLeftEye = false;
+                    leftEye.classList.remove("active");
+                    rightEye.classList.add("active");
+                    eyeTest.firstElementChild.innerHTML = isLeftEye ? "Left Eye Test" : "Right Eye Test";
+                }
 
-        function randomChar() {
-            let chars = 'ABcDeFgHIjKLMNOPqRSTuVWxYz';
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        }
+                const calibration = {
+                    isCalibrated: false,
+                    calibrationUnit: 0
+                }
+                let count = 20;
 
-        let count = 20;
-        window.addEventListener('keydown', (e) => {
-            if (e.keyCode === 38) {
-                count++;
-            }
-            else if (e.keyCode === 40) {
-                count--;
-            } else if (e.keyCode === 32) {
-                test.innerHTML = `${randomChar()} ${randomChar()} ${randomChar()} ${randomChar()}`;
-            } else if (e.key === "q"){
-                k += 1;
-                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
-            } else if (e.key === "e") {
-                k -= 1;
-                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
-            } else if (e.key === "w") {
-                console.log("k = ",k);
-            }
+                const incCount = () => {
+                    if (!calibration.isCalibrated && 3 * count > 0.8 * cal.clientWidth) return;
+                    count++;
+                    test.style.fontSize = count + 'px';
+                    box.style.width = 3 * count + 'px';
+                }
+                const decCount = () => {
+                    // if (3 * count > 0.8 * cal.clientWidth) return;
+                    count--;
+                    test.style.fontSize = count + 'px';
+                    box.style.width = 3 * count + 'px';
+                }
 
-            test.style.fontSize = count + 'px';
-            box.style.width = 3 * count + 'px';
+                up.onclick = incCount
+                down.onclick = decCount
 
-        })
-    </script>
+
+                function calcEyePower(size) {
+                    console.log(size, calibration.calibrationUnit)
+                    const eyePower = -0.0139047 * size + 0.00662667 * calibration.calibrationUnit;
+                    return eyePower;
+                }
+
+                recal.onclick = (e) => {
+                    calibration.isCalibrated = false;
+                    recal.style.display = "none";
+                    test.style.display = "none";
+                    result.style.display = "none";
+                    eyeTest.style.display = "none";
+                    form.style.display = "none";
+                    cal.style.display = "flex";
+                    calButton.innerHTML = "Calibrate";
+                    count = 19;
+                    incCount();
+                }
+                calButton.onclick = () => {
+                    if (calibration.isCalibrated) {
+                        result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
+                        result.style.display = "block";
+                        if (isLeftEye) {
+                            leftEyeInput.value = calcEyePower(parseInt(test.style.fontSize.split("p")[0]));
+                        } else {
+                            rightEyeInput.value = calcEyePower(parseInt(test.style.fontSize.split("p")[0]));
+                        }
+                    } else {
+                        calibration.calibrationUnit = parseInt(box.style.width.split("p")[0]);
+                        calibration.isCalibrated = true;
+                        calButton.innerHTML = "Calculate My Power";
+                        cal.style.display = "none";
+                        eyeTest.style.display = "block";
+                        test.style.display = "block";
+                        form.style.display = "block";
+                        eyeTest.firstElementChild.innerHTML = isLeftEye ? "Left Eye Test" : "Right Eye Test";
+                        recal.style.display = "block";
+                        count = 19;
+                        incCount();
+                    }
+                }
+
+                function randomChar() {
+                    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                    return chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                window.onresize = () => {
+                    count = 0.8 * cal.clientWidth / 3;
+                    test.style.fontSize = count + 'px';
+                    box.style.width = 3 * count + 'px';
+                }
+                window.addEventListener('keydown', (e) => {
+                    if (e.keyCode === 38) {
+                        incCount();
+                    }
+                    else if (e.keyCode === 40) {
+                        decCount();
+                    } else if (e.keyCode === 32) {
+                        test.innerHTML = `${randomChar()} ${randomChar()} ${randomChar()} ${randomChar()}`;
+                        incCount();
+                        decCount();
+                    }
+                    // } else if (e.key === "q"){
+                    //     k += 1;
+                    //     result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
+                    // } else if (e.key === "e") {
+                    //     k -= 1;
+                    //     result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
+                    // } else if (e.key === "w") {
+                    //     console.log("k = ",k);
+                    // }
+                    // console.log(box)
+
+                })
+            </script>
 </body>
 
 </html>
