@@ -145,8 +145,26 @@
         justify-content: center;
         align-items: center;
     }
-    .btn a{
+
+    .btn a {
         text-decoration: none !important;
+        color: black;
+    }
+
+    @media only screen and (max-width: 900px) {
+        .section {
+            font-size: 4rem !important;
+        }
+    }
+
+    @media only screen and (max-width: 500px) {
+        .section {
+            font-size: 3rem !important;
+        }
+
+        .cal h1 {
+            font-size: 2rem !important;
+        }
     }
 </style>
 
@@ -210,6 +228,7 @@
         <%- include("partials/footer.ejs") %>
 
             <!-- </div> -->
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
             <script>
                 const box = document.querySelector('.box');
                 const test = document.querySelector('.test');
@@ -234,10 +253,10 @@
                     const leftEye = data.get("leftEye");
                     const rightEye = data.get("rightEye");
 
-                    const res = await fetch("/saveResult",{
-                        method:"POST",
-                        body:JSON.stringify({leftEye , rightEye}),
-                        headers: {"Content-type" : "application/json"}
+                    const res = await fetch("/saveResult", {
+                        method: "POST",
+                        body: JSON.stringify({ leftEye, rightEye }),
+                        headers: { "Content-type": "application/json" }
                     })
 
                     let dataPower = await res.json();
@@ -294,10 +313,13 @@
                 down.onclick = decCount
 
 
-                function calcEyePower(size) {
-                    console.log(size, calibration.calibrationUnit)
-                    const eyePower = -0.0139047 * size + 0.00662667 * calibration.calibrationUnit;
-                    return eyePower;
+                async function calcEyePower(size) {
+                    const calUnit = calibration.calibrationUnit;
+
+                    const res = await axios.get(`https://sarvesh543.pythonanywhere.com?size=${size}&calUnit=${calUnit}`, 
+                    {withCredentials: false},
+                    )
+                    return res.data.output;
                 }
 
                 recal.onclick = (e) => {
@@ -313,10 +335,21 @@
                     count = 19;
                     incCount();
                 }
-                calButton.onclick = () => {
+                calButton.onclick = async () => {
                     if (calibration.isCalibrated) {
-                        result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
-                        result.style.display = "block";
+                        try {
+                            calButton.innerHTML = "Calculating...";
+                            calButton.disabled = true;
+                            const eyePower = await calcEyePower(parseInt(test.style.fontSize.split("p")[0]));
+                            result.innerHTML = `Your eye power is ${eyePower}`;
+                            result.style.display = "block";
+                            calButton.disabled = false;
+                            calButton.innerHTML = "Calculate My Power";
+                        } catch (error) {
+                            alert("Something went wrong, please try again later");
+                            calButton.disabled = false;
+                            calButton.innerHTML = "Calculate My Power";
+                        }
                         if (isLeftEye) {
                             leftEyeInput.value = calcEyePower(parseInt(test.style.fontSize.split("p")[0]));
                         } else {
