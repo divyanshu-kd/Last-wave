@@ -84,7 +84,10 @@
     }
 
     .aboutvideo {
-        width: 30%;
+        width: 40%;
+    }
+    .aboutvideo iframe{
+        width: 100%;
     }
 
     .infod {
@@ -197,7 +200,36 @@
         align-items: center;
     }
 
-    
+    /* max width 900px */
+    @media only screen and (max-width:900px) {
+        * {
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+        }
+        .aboutinfo{
+            width: 90%;
+        }
+        .aboutvideo{
+            width: 90%;
+        }
+        .titleinfo{
+            font-size: 4rem;
+        }
+        .check {
+            width: 30vw;
+        }
+        .counter-style, .counter-1 span{
+            flex-direction: row;
+        }
+        .counter-1{
+            width: 100%;
+        }
+        .form {
+            width: 95%;
+            
+        }
+    }
 </style>
 
 <body>
@@ -263,7 +295,7 @@
                     eos cumque nam corrupti ratione porro sequi voluptatem, pariatur facere
                 </div>
                 <div class="aboutvideo infod">
-                    <iframe width="500" height="400" src="https://www.youtube.com/embed/vpvuuAFLW-4?list=RDvpvuuAFLW-4"
+                    <iframe height="400" src="https://www.youtube.com/embed/vpvuuAFLW-4?list=RDvpvuuAFLW-4"
                         title="O Re piya | (lyrics) | Aaja Nachle | Rahat Fateh Ali Khan | music x 46" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen></iframe>
