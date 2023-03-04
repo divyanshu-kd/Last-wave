@@ -5,18 +5,18 @@ const eyePowerSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
-    leftEye: {
-        type: Number,
-    },
-    rightEye: {
-        type: Number,
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "frosthackUser",
-    },
+  leftEye: {
+    type: Number,
+  },
+  rightEye: {
+    type: Number,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "frosthackUser",
+  },
 });
 
-const eyePower = mongoose.model("frosthackUser", userSchema);
+const eyePower = mongoose.model("userEyePower", eyePowerSchema);
 
 module.exports = eyePower;

@@ -179,11 +179,30 @@
                 const rightEyeInput = document.querySelector(".rightEyeInput");
                 const form = document.querySelector(".eyeForm");
 
-                form.onsubmit = (e) => {
+                form.onsubmit = async(e) => {
                     e.preventDefault();
                     const data = new FormData(form);
                     const leftEye = data.get("leftEye");
                     const rightEye = data.get("rightEye");
+
+                    const res = await fetch("/saveResult",{
+                        method:"POST",
+                        body:JSON.stringify({leftEye , rightEye}),
+                        headers: {"Content-type" : "application/json"}
+                    })
+
+                    let dataPower = await res.json();
+
+                    if(dataPower == 'true'){
+                        alert("Saved Succesfully")
+                        save.style.border = "2px solid green";
+                        location.assign("/checkup")
+                    }
+                    else{
+                        alert("Calculate for both eyes")
+                        save.style.border = "2px solid red"
+                    }
+
                     console.log(leftEye, rightEye);
                 }
                 let isLeftEye = true;
