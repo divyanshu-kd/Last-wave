@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Company|Login</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
+
 <body>
-    
 
-    <h1>Login Page</h1>
+    <%- include("partials/navbar.ejs") %>
 
-    <a href="/signup">signup</a>
+        <div class="mainbody">
+            <div class="left">
+                <img class="leftin image" src="/images/login.png" alt="">
+            </div>
 
+            <div class="right">
+                <form class="form" action="/signup" method="post">
+                    <h2>Login</h2>
+                    <input class="input" type="text" name="email" required placeholder="E-mail" />
+                    <div class="email error"></div>
 
-    <form action="/login" method="post">
+                    <input class="input" type="password" name="password" required placeholder="Password" />
+                    <div class="password error"></div>
+                    <button class="btn button">Login</button>
+                </form>
+            </div>
+        </div>
 
-        <input type="email" placeholder="enter your email" required name="email">
-        <input type="password" placeholder="enter your password" required name="password">
-
-        <button type="submit">Submit</button>
-    </form>
+        <%- include("partials/footer.ejs") %>
 
 
 </body>
+
 </html>
