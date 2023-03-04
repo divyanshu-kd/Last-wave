@@ -66,6 +66,7 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
 
     const { email, passsword } = req.body;
+    console.log(req.body)
 
     const user = await users.findOne({ email });
 
@@ -95,6 +96,8 @@ app.get("/profile", checkAuth, async (req, res) => {
 
 app.post("/saveResult" ,checkAuth, async (req, res) => {
     const { leftEye, rightEye } = req.body;
+
+    console.log(req.body)
 
     let date = Date.now();
 
