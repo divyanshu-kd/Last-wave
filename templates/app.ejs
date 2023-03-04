@@ -8,15 +8,15 @@
     <title>Document</title>
 </head>
 <style>
-    body {
+    body, html {
 
         width: 100%;
-        height: 100%;
+        min-height: 100%;
     }
 
-    .container {
-        width: 100%;
-        height: 100%;
+    .container_custom {
+        width: 100% !important;
+        /* height: 100%; */
         inset: 0;
         display: flex;
         flex-direction: column;
@@ -47,7 +47,7 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        max-width: 100%;
+        width: 100%;
     }
 
     .result {
@@ -112,13 +112,23 @@
     .nav-tabs li div {
         cursor: pointer;
     }
+    .two_btns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    /* max width 500px */
+    @media only screen and (max-width: 500px) {
+        .two_btns{
+            flex-direction: column;
+        }
+    }
 </style>
 
 <body>
     <%- include("partials/navbar.ejs") %>
-
-        <div class="container">
-            <ul class="nav nav-tabs mt-3">
+        <div class="container_custom mx-auto">
+            <ul class="nav nav-tabs mt-3" style="display: none;">
                 <li class="nav-item">
                     <div class="nav-link active left-eye" aria-current="page">Left Eye</div>
                 </li>
@@ -150,8 +160,11 @@
                     </div>
                 </div>
             </div>
-            <button class="btn m-2 mt-3 cal_button">Calibrate</button>
-            <button class="btn m-2 recal" style="display:none;">Re Calibrate</button>
+            <div class="two_btns">
+
+                <button class="btn m-2 mt-3 cal_button">Calibrate</button>
+                <button class="btn m-2 recal" style="display:none;">Re Calibrate</button>
+            </div>
             <form class="eyeForm" action="" style="display:none;">
                 <input class="leftEyeInput" type="hidden" name="leftEye">
                 <input class="rightEyeInput" type="hidden" name="rightEye">
@@ -160,7 +173,10 @@
             </form>
 
         </div>
-        <%- include("partials/footer.ejs") %>
+        <div style="position:absolute; bottom: 0; left:0; right: 0;">
+            <%- include("partials/footer.ejs") %>
+
+        </div>
             <script>
                 const box = document.querySelector('.box');
                 const test = document.querySelector('.test');
@@ -239,6 +255,7 @@
                     eyeTest.style.display = "none";
                     form.style.display = "none";
                     cal.style.display = "flex";
+                    navTabs.style.display = "none";
                     calButton.innerHTML = "Calibrate";
                     count = 19;
                     incCount();
@@ -260,6 +277,7 @@
                         eyeTest.style.display = "block";
                         test.style.display = "block";
                         form.style.display = "block";
+                        navTabs.style.display = "flex";
                         eyeTest.firstElementChild.innerHTML = isLeftEye ? "Left Eye Test" : "Right Eye Test";
                         recal.style.display = "block";
                         count = 19;
@@ -272,15 +290,17 @@
                     return chars.charAt(Math.floor(Math.random() * chars.length));
                 }
                 window.onresize = () => {
+                    if(cal.style.display === "none") return;
                     count = 0.8 * cal.clientWidth / 3;
                     test.style.fontSize = count + 'px';
+                    // console.log("couont => ",test.style.fontSize);
                     box.style.width = 3 * count + 'px';
                 }
                 window.addEventListener('keydown', (e) => {
-                    if (e.keyCode === 38) {
+                    if (e.keyCode === 87) {
                         incCount();
                     }
-                    else if (e.keyCode === 40) {
+                    else if (e.keyCode === 83) {
                         decCount();
                     } else if (e.keyCode === 32) {
                         test.innerHTML = `${randomChar()} ${randomChar()} ${randomChar()} ${randomChar()}`;
