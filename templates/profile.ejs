@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,73 +9,127 @@
 </head>
 
 <style>
-    .profilecont{
-        width:100%;
+    .profilecont {
+        width: 100%;
+        padding: 40px 0px;
         display: flex;
-        min-height: 400px;
+        min-height: 300px;
         justify-content: center;
         align-items: center;
     }
-    .line{
-        width:7px;
-        height: 200px;
-        background-color: red;
+
+    .line {
+        width: 5px;
+        min-height: 300px;
+        background-color: rgb(0, 0, 0);
         margin: 10px 20px;
     }
 
-    .info{
-        width: 30%;
+    .info {
+        min-width: 20%;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items:center;
+        align-items: center;
     }
 
-    .info img{
+    .info img {
         width: 150px;
         height: 150px;
         object-fit: cover;
         border-radius: 50%;
+        border: 2px solid black;
     }
 
-    .resultinfo{
+    .resultinfo {
         width: 50%;
         font-size: 20px;
+        padding-left: 10px;
+        min-height: 300px;
+        max-height: 400px;
+        overflow-y: scroll;
     }
 
-    .section{
+    .section {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: url("https://img.freepik.com/free-vector/abstract-blue-geometric-shapes-background_1035-17545.jpg?w=2000") rgba(0,0,0,0.6) no-repeat center center/cover;
+        background: url("https://img.freepik.com/free-vector/abstract-blue-geometric-shapes-background_1035-17545.jpg?w=2000") rgba(0, 0, 0, 0.6) no-repeat center center/cover;
         background-attachment: fixed;
         background-blend-mode: multiply;
-        color:white;
-        height: 50vh;
+        color: white;
+        height: 45vh;
         font-size: 6rem !important;
     }
 
+    th,
+    td {
+        border: 1px solid black;
+        text-align: center !important;
+        padding: 10px;
+    }
+
+    .check {
+        width: 15vw;
+        position: relative;
+        padding: 15px !important;
+    }
 </style>
 
 <body>
-    
-    <%- include("partials/navbar.ejs") %>
-    
-    <div class="section">
-        Profile
-    </div>
 
-    <div class="profilecont">
-        <div class="info">
-            <img src="https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg" alt="">
-            <h3> <%= user.username %></h3>
-            <h4> <%= user.email %></h4>
+    <%- include("partials/navbar.ejs") %>
+
+        <div class="section">
+            Profile
         </div>
-        <div class="line"></div>
-        <div class="resultinfo">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate iste, sed commodi facere reprehenderit ut molestiae adipisci et repudiandae eos magnam omnis odio, sit tempora rerum iusto eveniet. Optio modi at voluptates nobis! Veritatis reprehenderit illo molestiae temporibus et adipisci, autem nam culpa ipsam porro ab inventore voluptate vitae deleniti iste quod nesciunt similique delectus quasi nemo possimus consectetur ipsa est. Repellat ut natus repudiandae quasi deleniti unde molestias, velit vero nesciunt repellendus non facere, pariatur obcaecati nostrum voluptas eius saepe dolorem accusantium error sint officiis vel quod excepturi doloribus! Quibusdam blanditiis explicabo, quia animi quod repellat tempore harum dolor.</div>
-    </div>
-    
-    <%- include("partials/footer.ejs") %>
-    
+
+        <div class="profilecont">
+            <div class="info">
+                <img src="<%= user.image %>" alt="">
+                <h3>
+                    <%= user.username %>
+                </h3>
+                <h4>
+                    <%= user.email %>
+                </h4>
+                <a class=" checkup-btn" href="/checkup"><button class="btn check">CheckUp</button></a>
+            </div>
+            <div class="line"></div>
+            <div class="resultinfo">
+                <% if(userData.length> 0) {%>
+                    <table style="width:100%">
+                        <tr>
+                            <th>Date</th>
+                            <th>LeftEye</th>
+                            <th>RightEye</th>
+                        </tr>
+
+                        <% for(let i=0 ; i<userData.length ; i++){ %>
+                            <tr>
+                                <td>
+                                    <%= userData[i].date.toLocaleString()%>
+                                </td>
+                                <td>
+                                    <%= userData[i].leftEye%>
+                                </td>
+                                <td>
+                                    <%= userData[i].rightEye%>
+                                </td>
+                            </tr>
+                            <%}%>
+                    </table>
+                    <%} else {%>
+
+                        <h2>No Previous Record !</h2>
+
+                        <%}%>
+
+            </div>
+        </div>
+
+        <%- include("partials/footer.ejs") %>
+
 </body>
+
 </html>
