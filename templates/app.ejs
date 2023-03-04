@@ -8,11 +8,12 @@
     <title>Document</title>
 </head>
 <style>
-    body{
+    body {
 
         width: 100%;
         height: 100%;
     }
+
     .container {
         width: 100%;
         height: 100%;
@@ -30,11 +31,60 @@
 
     .box {
         background-color: black;
-        height: 150px;
+        height: 5px;
         width: 60px;
     }
-    .result{
+
+    .cal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .result {
         display: none;
+    }
+
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+
+    .right {
+        transform: translateX(-3px) rotate(-45deg);
+        -webkit-transform: translateX(-3px) rotate(-45deg);
+    }
+
+    .left {
+        transform: translateX(3px) rotate(135deg);
+        -webkit-transform: translateX(3px) rotate(135deg);
+    }
+
+    .up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+    .down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+
+    .calibrate_container {
+        margin: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .app_btn{
+        padding: 5px 10px;
+        /* background-color: black; */
+        border-radius: 50%;
+        border: 1px solid black;
     }
 </style>
 
@@ -43,9 +93,25 @@
 
         <div class="test">F P C D</div>
         <h2 class="result"></h2>
-        <div class="box">
+        <div class="cal">
+
+            <h1>Calibrate Your Distance</h1>
+            <div class="calibrate_container">
+                <div class="arrow left"></div>
+                <div class="box">
+                </div>
+                <div class="arrow right"></div>
+
+            </div>
+            <div class="app_btn app_up">
+                <div class="arrow up"></div>
+            </div>
+            <div class="app_btn app_down">
+
+                <div class="arrow down"></div>
+            </div>
         </div>
-        <button class="cal_button">calibrate</button>
+        <button class="cal_button">Calibrate</button>
 
     </div>
     <script>
@@ -53,7 +119,8 @@
         const test = document.querySelector('.test');
         const calButton = document.querySelector(".cal_button");
         const result = document.querySelector(".result");
-        
+        const cal = document.querySelector(".cal");
+
         let k = 1;
 
         const calibration = {
@@ -61,21 +128,21 @@
             calibrationUnit: 0
         }
 
-        function calcEyePower(size,k) {
-            console.log(size, k ,calibration.calibrationUnit)
-            const eyePower = 0.01291765*size*k/calibration.calibrationUnit + 0.6880325789;
-            return -1 * eyePower;
+        function calcEyePower(size) {
+            console.log(size, calibration.calibrationUnit)
+            const eyePower = -0.0139047 * size + 0.00662667 * calibration.calibrationUnit;
+            return eyePower;
         }
         calButton.onclick = () => {
-            if(calibration.isCalibrated){
-                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
+            if (calibration.isCalibrated) {
+                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
                 result.style.display = "block";
-            }else{
+            } else {
                 calibration.calibrationUnit = parseInt(box.style.width.split("p")[0]);
                 console.log(calibration.calibrationUnit);
                 calibration.isCalibrated = true;
                 calButton.innerHTML = "Calculate My Power";
-                box.style.display = "none";
+                cal.style.display = "none";
                 test.style.display = "block";
             }
         }
@@ -94,15 +161,16 @@
                 count--;
             } else if (e.keyCode === 32) {
                 test.innerHTML = `${randomChar()} ${randomChar()} ${randomChar()} ${randomChar()}`;
-            } else if (e.key === "q"){
-                k += 1;
-                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
-            } else if (e.key === "e") {
-                k -= 1;
-                result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]), k)}`;
-            } else if (e.key === "w") {
-                console.log("k = ",k);
             }
+            // } else if (e.key === "q"){
+            //     k += 1;
+            //     result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
+            // } else if (e.key === "e") {
+            //     k -= 1;
+            //     result.innerHTML = `Your eye power is ${calcEyePower(parseInt(test.style.fontSize.split("p")[0]))}`;
+            // } else if (e.key === "w") {
+            //     console.log("k = ",k);
+            // }
 
             test.style.fontSize = count + 'px';
             box.style.width = 3 * count + 'px';
