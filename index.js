@@ -32,6 +32,7 @@ app.set("view engine", "ejs");
 app.set("views", "templates");
 
 app.get('*', checkUser);
+app.post('*', checkUser);
 app.get("/", (req, res) => { res.render("index") });
 app.get("/checkup", (req, res) => { res.render("app") });
 
@@ -90,22 +91,21 @@ app.get("/profile", checkAuth, async (req, res) => {
     res.render("profile", { userData: usereyePower });
 });
 
-app.post("/saveResult", async (req, res) => {
+app.post("/saveResult" ,checkAuth, async (req, res) => {
     const { leftEye, rightEye } = req.body;
 
     let date = Date.now();
-    console.log(date)
 
     if (leftEye == "" || rightEye == "") {
         res.json("false");
     }
     else {
         try {
-
-            await eyepower.create({ leftEye, rightEye, date })
+            await eyepower.create({ leftEye, rightEye, date ,user:res.locals.user._id })
             res.json("true");
 
         } catch (error) {
+            console.log(error)
             res.json("false");
         }
     }
