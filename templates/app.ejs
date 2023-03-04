@@ -8,8 +8,8 @@
     <title>Document</title>
 </head>
 <style>
-    body, html {
-
+    body,
+    html {
         width: 100%;
         min-height: 100%;
     }
@@ -23,6 +23,9 @@
         justify-content: center;
         align-items: center;
         max-width: 95vw;
+        margin: 20px;
+        border-radius: 10px;
+        border: 1px solid black;
         text-align: center;
     }
 
@@ -112,21 +115,51 @@
     .nav-tabs li div {
         cursor: pointer;
     }
+
     .two_btns {
         display: flex;
         justify-content: center;
         align-items: center;
     }
+
     /* max width 500px */
     @media only screen and (max-width: 500px) {
-        .two_btns{
+        .two_btns {
             flex-direction: column;
         }
+    }
+
+    .section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url("https://img.freepik.com/free-vector/abstract-blue-geometric-shapes-background_1035-17545.jpg?w=2000") rgba(0, 0, 0, 0.6) no-repeat center center/cover;
+        background-attachment: fixed;
+        background-blend-mode: multiply;
+        color: white;
+        height: 50vh;
+        font-size: 6rem !important;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .btn a{
+        text-decoration: none !important;
     }
 </style>
 
 <body>
     <%- include("partials/navbar.ejs") %>
+        <div class="section">
+            Check Eye Power
+            <button class="btn mt-3"><a href="/#about">
+
+                    How To Use
+                </a>
+            </button>
+        </div>
         <div class="container_custom mx-auto">
             <ul class="nav nav-tabs mt-3" style="display: none;">
                 <li class="nav-item">
@@ -162,7 +195,7 @@
             </div>
             <div class="two_btns">
 
-                <button class="btn m-2 mt-3 cal_button">Calibrate</button>
+                <button class="btn m-2 cal_button">Calibrate</button>
                 <button class="btn m-2 recal" style="display:none;">Re Calibrate</button>
             </div>
             <form class="eyeForm" action="" style="display:none;">
@@ -173,10 +206,10 @@
             </form>
 
         </div>
-        <div style="position:absolute; bottom: 0; left:0; right: 0;">
-            <%- include("partials/footer.ejs") %>
+        <!-- <div style="position:absolute; bottom: 0; left:0; right: 0;"> -->
+        <%- include("partials/footer.ejs") %>
 
-        </div>
+            <!-- </div> -->
             <script>
                 const box = document.querySelector('.box');
                 const test = document.querySelector('.test');
@@ -195,26 +228,26 @@
                 const rightEyeInput = document.querySelector(".rightEyeInput");
                 const form = document.querySelector(".eyeForm");
 
-                form.onsubmit = async(e) => {
+                form.onsubmit = async (e) => {
                     e.preventDefault();
                     const data = new FormData(form);
                     const leftEye = data.get("leftEye");
                     const rightEye = data.get("rightEye");
 
-                    const res = await fetch("/saveResult",{
-                        method:"POST",
-                        body:JSON.stringify({leftEye , rightEye}),
-                        headers: {"Content-type" : "application/json"}
+                    const res = await fetch("/saveResult", {
+                        method: "POST",
+                        body: JSON.stringify({ leftEye, rightEye }),
+                        headers: { "Content-type": "application/json" }
                     })
 
                     let dataPower = await res.json();
 
-                    if(dataPower == 'true'){
+                    if (dataPower == 'true') {
                         alert("Saved Succesfully")
                         save.style.border = "2px solid green";
                         location.assign("/checkup")
                     }
-                    else{
+                    else {
                         alert("Calculate for both eyes")
                         save.style.border = "2px solid red"
                     }
@@ -228,13 +261,14 @@
                     rightEye.classList.remove("active");
                     leftEye.classList.add("active");
                     eyeTest.firstElementChild.innerHTML = isLeftEye ? "Left Eye Test" : "Right Eye Test";
-
+                    result.style.display = "none";
                 }
                 rightEye.onclick = () => {
                     isLeftEye = false;
                     leftEye.classList.remove("active");
                     rightEye.classList.add("active");
                     eyeTest.firstElementChild.innerHTML = isLeftEye ? "Left Eye Test" : "Right Eye Test";
+                    result.style.display = "none";
                 }
 
                 const calibration = {
@@ -244,7 +278,7 @@
                 let count = 20;
 
                 const incCount = () => {
-                    if (!calibration.isCalibrated && 3 * count > 0.8 * cal.clientWidth) return;
+                    if (!calibration.isCalibrated && 3 * count > 0.9 * cal.clientWidth) return;
                     count++;
                     test.style.fontSize = count + 'px';
                     box.style.width = 3 * count + 'px';
@@ -309,8 +343,8 @@
                     return chars.charAt(Math.floor(Math.random() * chars.length));
                 }
                 window.onresize = () => {
-                    if(cal.style.display === "none") return;
-                    count = 0.8 * cal.clientWidth / 3;
+                    if (cal.style.display === "none") return;
+                    count = 0.9 * cal.clientWidth / 3;
                     test.style.fontSize = count + 'px';
                     // console.log("couont => ",test.style.fontSize);
                     box.style.width = 3 * count + 'px';
