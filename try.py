@@ -2,35 +2,22 @@ from scipy import stats
 from sklearn import linear_model
 import matplotlib.pyplot as plt
 import numpy
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.ensemble import RandomForestRegressor
 
-# points = [9,60,265,420,470]
-# maxFreqList = [0.25,2.25,3.75,6.25,6.75]
-# slope,intercept, r, p, std_err = stats.linregress(points,maxFreqList)
+X = [[171, 240], [305, 435], [29, 561], [59, 843], [184, 900], [14, 432],
+     [18, 525], [11, 618], [257, 690], [440, 990], [198, 210], [219, 330]]
+y = [ -6.75, -6.75, -2.25, -2.25, -2.25, -2.25, -0.25, -0.25, -3.75, -4, -6.75, -6.25]
 
-# def myfunc(x):
-#   return slope * x + intercept
+poly_model = PolynomialFeatures(degree=3)
 
-# mymodel = list(map(myfunc,points))
-# mymodel = numpy.poly1d(numpy.polyfit(points, maxFreqList, 1))
-# print(mymodel)/
+# transform out polynomial features
+poly_x_values = poly_model.fit_transform(X)
 
-X = [[171,240],[305,435],[29,561],[59,843],[184,900],[14,432]]
-y = [-6.75,-6.75,-2.25,-2.25,-2.25,-2.25]
-regr = linear_model.LinearRegression()
-regr.fit(X, y)
+regression_model = LinearRegression()
+regression_model.fit(poly_x_values, y)
+poly_values_test = poly_model.transform([[171, 240]])
+y_pred = regression_model.predict(poly_values_test)
 
-# predSarvesh = regr.predict([])
-print(regr.coef_)
-# predLakshay = regr.predict([])
-predLakshay = regr.predict([[171,240]])
-
-print("Lakshay = ",predLakshay)
-
-# plt.scatter(points,maxFreqList)
-# plt.plot(points,mymodel)
-# plt.title("Linear regression model for dominant frequency")
-# plt.xlabel("Relative order")
-# plt.ylabel("maxFreq")
-# plt.show()
-
-# print("The equation for dominant frequency is:  frequency = ",slope,"* RelativeOrder + ",intercept)
+print(y_pred)
