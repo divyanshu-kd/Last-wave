@@ -205,10 +205,8 @@
 
     /* max width 900px */
     @media only screen and (max-width:900px) {
-        * {
+        .about-section {
             flex-direction: column;
-            text-align: center;
-            align-items: center;
         }
         .aboutinfo{
             width: 90%;
@@ -217,7 +215,7 @@
             width: 90%;
         }
         .titleinfo{
-            font-size: 4rem;
+            font-size: 5rem;
         }
         .check {
             width: 30vw;
@@ -231,6 +229,17 @@
         .form {
             width: 95%;
             
+        }
+    }
+    @media only screen and (max-width: 500px) {
+        .titleinfo{
+            font-size: 3rem;
+        }
+        .aboutinfo {
+            font-size: small;
+        }
+        .check {
+            width: 50vw;
         }
     }
 </style>
