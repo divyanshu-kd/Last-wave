@@ -7,75 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<style>
-    div {
-        /* position: absolute;
-        top: 50%;
-        left: 50%; */
-        font-size: 20px;
-    }
-
-
-    .box {
-        width: 30ch;
-        height: 300px;
-        background: #000;
-
-    }
-
-    .box2 {
-        width: 7.95cm;
-        height: 300px;
-        background: red;
-
-    }
-</style>
 
 <body>
 
-    <% if(!user){ %>
-        <a href="/signup">Signup</a>
-        <br>
-        <a href="/login">Login</a>
-        <% } else{ %>
-        <a href="/logout">Logout</a>
-        <%}%>
-        <a href="/checkup">Check Up</a>
-            <br><br>
-            <br><br>
+    <%-include("partials/navbar.ejs") %>
+        <%-include("partials/footer.ejs") %>
 
 
-
-            <div id="div">Fqqqqqqqqqqqqqqq</div>
-            <div class="box"></div>
-            <div class="box2"></div>
+            <a href="/checkup"><button class="btn">CheckUp</button></a>
 </body>
-
-<script>
-
-    let div = document.getElementById("div");
-    let count = 20;
-
-
-    const characters = 'abcdefghijklmnopqrstuvwxyz';
-    const charactersLength = characters.length;
-
-    window.addEventListener("keypress", (e) => {
-
-
-        if (e.key === 'q') {
-            count += 1;
-        }
-        else if (e.key === 'w') {
-            count -= 1;
-        }
-        else {
-            div.innerHTML = characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        div.style.fontSize = `${count}px`
-    })
-
-</script>
-
 
 </html>
