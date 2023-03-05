@@ -45,13 +45,12 @@
 .mainbody {
 
     display: flex;
+    min-height:100vh !important;
     width: 87%;
     margin: auto;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
-
 }
 
 .left {
