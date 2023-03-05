@@ -258,6 +258,9 @@
                         body: JSON.stringify({ leftEye, rightEye }),
                         headers: { "Content-type": "application/json" }
                     })
+                    if (res.redirected) {
+                        window.location.href="/login";
+                    }
 
                     let dataPower = await res.json();
 
@@ -316,8 +319,8 @@
                 async function calcEyePower(size) {
                     const calUnit = calibration.calibrationUnit;
 
-                    const res = await axios.get(`https://sarvesh543.pythonanywhere.com?size=${size}&calUnit=${calUnit}`, 
-                    {withCredentials: false},
+                    const res = await axios.get(`https://sarvesh543.pythonanywhere.com?size=${size}&calUnit=${calUnit}`,
+                        { withCredentials: false },
                     )
                     return res.data.output;
                 }
