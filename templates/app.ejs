@@ -319,7 +319,7 @@
                 async function calcEyePower(size) {
                     const calUnit = calibration.calibrationUnit;
 
-                    const res = await axios.get(`http://localhost:5000/result?size=${size}&calUnit=${calUnit}`,
+                    const res = await axios.get(`http://43.205.231.86:5000/result?size=${size}&calUnit=${calUnit}`,
                         { withCredentials: false },
                     )
                     return res.data.output;
@@ -350,7 +350,7 @@
                             calButton.innerHTML = "Calculate My Power";
                         } catch (error) {
                             alert("Something went wrong, please try again later");
-                            console.log("error", error)
+                            // console.log("error", error)
                             calButton.disabled = false;
                             calButton.innerHTML = "Calculate My Power";
                         }
