@@ -12,7 +12,7 @@ CORS(app)
 def res():
     size = request.args.get("size")
     calUnit = request.args.get("calUnit")
-    result = jsonify({"output":eye_predict(size,calUnit)[0]})
+    result = jsonify({"output":round(eye_predict(size,calUnit)[0],3)})
     return result
 
 if __name__ == '__main__':
