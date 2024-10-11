@@ -1,19 +1,19 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from getresult import eye_predict
 # from fastapi import FastAPI
-# from flask_cors import CORS
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
 
+CORS(app)
 
 @app.route('/result', methods=['GET'])
-def signup():
-    url = "http://127.0.0.1:5000/send/"
-    obj = requests.get(url)
-    data = obj.json()
-    var = jsonify({"output":eye_predict(data.size,data.calunit)[0]})
-    return var
+def res():
+    size = request.args.get("size")
+    calUnit = request.args.get("calUnit")
+    result = jsonify({"output":eye_predict(size,calUnit)[0]})
+    return result
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

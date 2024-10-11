@@ -8,7 +8,7 @@ const nodemailer = require("nodemailer")
 const users = require("./models/user");
 const eyepower = require("./models/eyePower");
 const mongoose = require("mongoose");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 const { checkUser, checkAuth } = require("./middleware/authmiddleware");
 
 const app = express();

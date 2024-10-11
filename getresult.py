@@ -10,7 +10,7 @@ def eye_predict(size,calunit):
      # transform out polynomial features
      poly_x_values = poly_model.fit_transform(X)
 
-     print(poly_model.powers_)
+     # print(poly_model.powers_)
 
      regression_model = LinearRegression()
      regression_model.fit(poly_x_values, y)
