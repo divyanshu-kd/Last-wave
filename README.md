@@ -1,2 +1,2 @@
 # Frosthack
-Live Demo - https://frosthack-production.up.railway.app/
+Live Demo - http://lastwave.lakshaynailwaldevs.top:8000/
